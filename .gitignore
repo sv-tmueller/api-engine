@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Next.js / Node
+node_modules/
+.next/
+next-env.d.ts
+.vercel
+*.tsbuildinfo
+
+# Local env files
+.env*.local
+.env
+
+# Supabase
+supabase/.branches
+supabase/.temp
