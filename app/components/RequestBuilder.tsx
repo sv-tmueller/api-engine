@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import type {
   RequestMethod,
   HeaderRow,
@@ -10,6 +10,14 @@ import type {
 const METHODS: RequestMethod[] = ["GET", "POST", "PUT", "PATCH", "DELETE"];
 
 interface RequestBuilderProps {
+  method: RequestMethod;
+  url: string;
+  headers: HeaderRow[];
+  body: string;
+  onMethodChange: (method: RequestMethod) => void;
+  onUrlChange: (url: string) => void;
+  onHeadersChange: (headers: HeaderRow[]) => void;
+  onBodyChange: (body: string) => void;
   onResponse: (response: ProxyResponseBody | null, error: string | null) => void;
   onLoadingChange?: (loading: boolean) => void;
 }
@@ -19,28 +27,29 @@ function generateId(): string {
 }
 
 export default function RequestBuilder({
+  method,
+  url,
+  headers,
+  body,
+  onMethodChange,
+  onUrlChange,
+  onHeadersChange,
+  onBodyChange,
   onResponse,
   onLoadingChange,
 }: RequestBuilderProps) {
-  const [method, setMethod] = useState<RequestMethod>("GET");
-  const [url, setUrl] = useState("");
-  const [headers, setHeaders] = useState<HeaderRow[]>([
-    { id: generateId(), key: "", value: "" },
-  ]);
-  const [body, setBody] = useState("");
-
   const showBody = method === "POST" || method === "PUT" || method === "PATCH";
 
   const addHeader = () => {
-    setHeaders([...headers, { id: generateId(), key: "", value: "" }]);
+    onHeadersChange([...headers, { id: generateId(), key: "", value: "" }]);
   };
 
   const removeHeader = (id: string) => {
-    setHeaders(headers.filter((h) => h.id !== id));
+    onHeadersChange(headers.filter((h) => h.id !== id));
   };
 
   const updateHeader = (id: string, field: "key" | "value", val: string) => {
-    setHeaders(
+    onHeadersChange(
       headers.map((h) => (h.id === id ? { ...h, [field]: val } : h)),
     );
   };
@@ -85,7 +94,15 @@ export default function RequestBuilder({
     } finally {
       onLoadingChange?.(false);
     }
-  }, [method, url, headers, body, showBody, onResponse, onLoadingChange]);
+  }, [
+    method,
+    url,
+    headers,
+    body,
+    showBody,
+    onResponse,
+    onLoadingChange,
+  ]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -93,7 +110,7 @@ export default function RequestBuilder({
       <div className="flex gap-2">
         <select
           value={method}
-          onChange={(e) => setMethod(e.target.value as RequestMethod)}
+          onChange={(e) => onMethodChange(e.target.value as RequestMethod)}
           className="bg-[var(--color-bg-glow)] text-fg border border-border rounded-lg px-3 py-2 text-sm font-mono outline-none focus:border-accent transition-colors"
         >
           {METHODS.map((m) => (
@@ -105,7 +122,7 @@ export default function RequestBuilder({
         <input
           type="text"
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => onUrlChange(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") sendRequest();
           }}
@@ -164,7 +181,7 @@ export default function RequestBuilder({
           <span className="text-muted text-xs tracking-wide">Body</span>
           <textarea
             value={body}
-            onChange={(e) => setBody(e.target.value)}
+            onChange={(e) => onBodyChange(e.target.value)}
             placeholder='{ "key": "value" }'
             rows={6}
             className="bg-[var(--color-bg-glow)] text-fg-2 border border-border rounded-lg px-3 py-2 text-sm font-mono outline-none focus:border-accent transition-colors placeholder:text-muted resize-y"
