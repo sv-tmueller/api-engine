@@ -34,7 +34,7 @@ these tokens:
 - Proxy route (`/api/proxy`): serverless function that forwards requests
   to avoid CORS and allow header manipulation. Browser talks to Vercel,
   Vercel talks to the target API.
-- No auth, Cloudflare Zero Trust gates access externally.
+- Single-user, no auth. Cloudflare Zero Trust gates access externally.
 
 ## Working principles
 

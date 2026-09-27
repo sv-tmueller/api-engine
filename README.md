@@ -1,7 +1,7 @@
 # api-engine
 
 REST API playground hosted on Vercel. Postman-inspired interface for composing
-and testing HTTP requests. Requests go through a serverless proxy, nothing is
+and testing HTTP requests. Requests go through a serverless proxy. Nothing is
 stored.
 
 Design system inherited from strueller.de (home-pager): dark theme, Tailwind v4
