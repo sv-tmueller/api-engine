@@ -1,11 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import RequestBuilder from "./components/RequestBuilder";
 import ResponseViewer from "./components/ResponseViewer";
-import CollectionsSidebar, {
-  type LoadedRequestData,
-} from "./components/CollectionsSidebar";
 import type { ProxyResponseBody, RequestMethod, HeaderRow } from "./lib/types";
 
 function generateId(): string {
@@ -32,19 +29,6 @@ export default function Home() {
     setError(err);
   };
 
-  const handleLoadRequest = useCallback((data: LoadedRequestData) => {
-    setMethod(data.method);
-    setUrl(data.url);
-    setHeaders(data.headers);
-    setBody(data.body);
-    setResponse(null);
-    setError(null);
-  }, []);
-
-  const getCurrentRequest = useCallback((): LoadedRequestData => {
-    return { method, url, headers, body };
-  }, [method, url, headers, body]);
-
   return (
     <main className="min-h-[100dvh] flex flex-col p-6 gap-6">
       <header className="flex items-center gap-3 pb-4 border-b border-border">
@@ -56,16 +40,8 @@ export default function Home() {
       </header>
 
       <div className="flex flex-col lg:flex-row gap-6 flex-1">
-        {/* Sidebar: collections */}
-        <aside className="lg:w-64 shrink-0 flex flex-col gap-4 lg:max-h-[calc(100dvh-120px)]">
-          <CollectionsSidebar
-            onLoadRequest={handleLoadRequest}
-            getCurrentRequest={getCurrentRequest}
-          />
-        </aside>
-
-        {/* Center: request builder */}
-        <div className="flex-1 flex flex-col gap-4">
+        {/* Left: request builder */}
+        <div className="lg:w-1/2 flex flex-col gap-4">
           <span className="text-muted text-xs tracking-wide">Request</span>
           <RequestBuilder
             method={method}
@@ -82,7 +58,7 @@ export default function Home() {
         </div>
 
         {/* Right: response viewer */}
-        <div className="lg:w-[35%] flex flex-col gap-4">
+        <div className="lg:w-1/2 flex flex-col gap-4">
           <span className="text-muted text-xs tracking-wide">Response</span>
           <div className="flex-1">
             <ResponseViewer

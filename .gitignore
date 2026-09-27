@@ -11,7 +11,3 @@ next-env.d.ts
 # Local env files
 .env*.local
 .env
-
-# Supabase
-supabase/.branches
-supabase/.temp

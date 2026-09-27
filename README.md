@@ -1,7 +1,8 @@
 # api-engine
 
 REST API playground hosted on Vercel. Postman-inspired interface for composing
-and testing HTTP requests, with Supabase-backed collections persistence.
+and testing HTTP requests. Requests go through a serverless proxy, nothing is
+stored.
 
 Design system inherited from strueller.de (home-pager): dark theme, Tailwind v4
 tokens, Space Grotesk + JetBrains Mono.
@@ -10,7 +11,6 @@ tokens, Space Grotesk + JetBrains Mono.
 
 - Next.js 15 (App Router) + React 19 + TypeScript
 - Tailwind CSS v4 (@theme tokens)
-- Supabase (collections persistence)
 - Deployed on Vercel via Git integration
 
 ## Development
@@ -24,9 +24,6 @@ npm run lint
 
 ## Environment
 
-Copy `.env.example` to `.env.local` and fill in:
-
-- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
-- `SUPABASE_SERVICE_KEY` - Supabase service role key (server-side only)
+No environment variables are needed.
 
 Access is gated externally via Cloudflare Zero Trust (planned).
