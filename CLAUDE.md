@@ -5,10 +5,8 @@ Orientation for Claude Code sessions in this repo. Read this first.
 ## What this repo is
 
 `api-engine` is a personal REST API playground hosted on Vercel at
-api.strueller.de. It combines a Postman-like request builder with a
-serverless proxy and Supabase-backed collections persistence. Long-term
-goal: an endpoint builder for defining and testing small serverless API
-functions inline.
+api.strueller.de. It is a stateless, Postman-like request builder backed
+by a serverless proxy. Nothing is persisted.
 
 Deployed on Vercel via the Git integration (push to main triggers
 production deploy). Access gating planned via Cloudflare Zero Trust,
@@ -18,7 +16,6 @@ consistent with other strueller.de subdomains.
 
 - Next.js 15 (App Router) + React 19 + TypeScript (strict)
 - Tailwind CSS v4 (@theme tokens in app/globals.css)
-- Supabase for persistence (service role key, server-side only)
 - ESLint 9 + eslint-config-next
 
 ## Design system
@@ -37,11 +34,7 @@ these tokens:
 - Proxy route (`/api/proxy`): serverless function that forwards requests
   to avoid CORS and allow header manipulation. Browser talks to Vercel,
   Vercel talks to the target API.
-- Single-user: no auth or RLS. Cloudflare Zero Trust gates access
-  externally. Service role key used directly server-side.
-- Future endpoint builder: stored-handler pattern. Catch-all route
-  `/api/e/[slug]` loads function body from Supabase, executes via
-  `new Function()` with a req/res shim. No redeploy needed.
+- Single-user, no auth. Cloudflare Zero Trust gates access externally.
 
 ## Working principles
 
@@ -83,4 +76,4 @@ npm run start    # serve the production build
 - Don't push directly to main. Open a PR.
 - Don't commit secrets. Env goes in `.env.local` (gitignored).
 - Don't drift from the Tailwind @theme token block in globals.css.
-- Don't add auth or RLS policies (single-user, Cloudflare gates access).
+- Don't add auth (single-user, Cloudflare gates access).
