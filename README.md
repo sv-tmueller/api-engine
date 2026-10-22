@@ -27,3 +27,7 @@ npm run lint
 No environment variables are needed.
 
 Access is gated externally via Cloudflare Zero Trust (planned).
+
+## License
+
+© 2026 Thomas Mueller. All rights reserved. Source shown for reference only.
